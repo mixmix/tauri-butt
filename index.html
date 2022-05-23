@@ -8,6 +8,31 @@
   </head>
   <body>
     <div id="app"></div>
+
+    <div id="backend"></div>
+    <div id="frontend"></div>
+
     <script type="module" src="/src/main.js"></script>
+
+    <script>
+      function log (context, message) {
+        console.log(context, message)
+      }
+
+      window.__TAURI__.event.listen('message', (event) => {
+        log('PEER', event.payload)
+      })
+
+      const { Command } = window.__TAURI__.shell
+
+      const command = Command.sidecar('binaries/app')
+      command.on('close', data => {
+        log('UI', `command finished with code ${data.code} and signal ${data.signal}`)
+      })
+      command.on('error', error => log('UI', `command error: "${error}"`))
+      command.stdout.on('data', line => log('UI', `command stdout: "${line}"`))
+      command.stderr.on('data', line => log('UI', `command stderr: "${line}"`))
+      command.spawn()
+    </script>
   </body>
 </html>

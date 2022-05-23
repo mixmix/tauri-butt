@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+peer.bundle.js
+src-tauri/binaries/
 *.local
 
 # Editor directories and files

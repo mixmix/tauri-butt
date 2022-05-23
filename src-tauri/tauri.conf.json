@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "npm run build:peer && npm run build:ui",
     "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:3000",
     "distDir": "../dist"
@@ -21,7 +21,7 @@
       "deb": {
         "depends": []
       },
-      "externalBin": [],
+      "externalBin": ["binaries/app"],
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "nz.butt.demo",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -40,15 +40,27 @@
       },
       "resources": [],
       "shortDescription": "",
-      "targets": "all",
+      "targets": ["appimage"],
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
       }
     },
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "binaries/app",
+            "sidecar": true
+          }
+        ]
+      }
+    },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'"
     },
     "updater": {
       "active": false
